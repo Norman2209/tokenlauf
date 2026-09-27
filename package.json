@@ -1,0 +1,13 @@
+{
+  "name": "tokenlauf",
+  "version": "1.0.0",
+  "description": "Interaktiver Lernpfad für Prozessautomatisierung mit Camunda",
+  "private": true,
+  "scripts": {
+    "start": "python3 -m http.server 8000",
+    "test": "node tests/pruefe-loesungen.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

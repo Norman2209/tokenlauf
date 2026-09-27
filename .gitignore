@@ -1,0 +1,8 @@
+.DS_Store
+node_modules/
+.idea/
+.vscode/
+*.log
+
+# Gesprächsverlauf mit Claude (enthält persönliche Daten, bewusst nicht im Repo)
+konversation/
