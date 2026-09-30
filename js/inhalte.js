@@ -113,6 +113,33 @@ function pruefeFreigabe(betrag) {
 
 console.log(pruefeFreigabe(750)); // "teamleitung"
 `)}
+      <p>Als BPMN sieht dieselbe Entscheidung so aus: ein <strong>exklusives Gateway</strong> mit einem Pfad je Bedingung. Der letzte Pfad hat keine eigene Bedingung, er ist der <strong>Default-Flow</strong> und entspricht dem <code>else</code> im Code.</p>
+      <div class="sim"><div class="sim-canvas">
+        <svg viewBox="0 0 620 244" role="img" aria-label="BPMN-Diagramm: Start, exklusives Gateway 'pruefeFreigabe', drei Pfade nach Betrag, drei Enden mit dem jeweiligen Rückgabewert">
+          <defs>
+            <marker id="arr-cond" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="var(--ink-3)"/></marker>
+          </defs>
+          <path class="flow" marker-end="url(#arr-cond)" d="M47 120 H96"/>
+          <path class="flow" marker-end="url(#arr-cond)" d="M144 120 V40 H522"/>
+          <path class="flow" marker-end="url(#arr-cond)" d="M144 120 H522"/>
+          <path class="flow" marker-end="url(#arr-cond)" d="M144 120 V200 H522"/>
+
+          <text class="cond" x="215" y="32">betrag &gt; 1000</text>
+          <text class="cond" x="215" y="112">betrag &gt; 500</text>
+          <text class="cond" x="215" y="216">sonst (Default-Flow)</text>
+
+          <circle class="bp" cx="32" cy="120" r="15"/>
+          <path class="bp" d="M120 96 L144 120 L120 144 L96 120 Z"/>
+          <path class="bp-line" d="M112 112 L128 128 M128 112 L112 128" stroke-width="3"/>
+
+          <circle class="bp bp-thick" cx="536" cy="40" r="14"/>
+          <circle class="bp bp-thick" cx="536" cy="120" r="14"/>
+          <circle class="bp bp-thick" cx="536" cy="200" r="14"/>
+          <text x="536" y="66" text-anchor="middle">return "manager"</text>
+          <text x="536" y="146" text-anchor="middle">return "teamleitung"</text>
+          <text x="536" y="226" text-anchor="middle">return "automatisch"</text>
+        </svg>
+      </div></div>
       <div class="table-wrap"><table class="t">
         <thead><tr><th>Operator</th><th>Bedeutung</th><th>Beispiel</th></tr></thead>
         <tbody>
@@ -179,7 +206,29 @@ for (const position of bestellung.positionen) {
 }
 console.log(stueckzahl); // 11
 `)}
-      <p>Arrays zählen ab 0. <code>for...of</code> geht jedes Element der Reihe nach durch. So ähnlich arbeitet in BPMN eine <strong>Multi-Instance-Aktivität</strong>: Sie führt eine Aufgabe für jedes Element einer Liste aus.</p>`,
+      <p>Arrays zählen ab 0. <code>for...of</code> geht jedes Element der Reihe nach durch. So ähnlich arbeitet in BPMN eine <strong>Multi-Instance-Aktivität</strong>: Sie führt eine Aufgabe für jedes Element einer Liste aus. Die drei waagrechten Striche im Symbol markieren <strong>sequentiell</strong>, also nacheinander wie <code>for...of</code>. Drei senkrechte Striche stünden für <strong>parallel</strong>, dazu mehr in Modul 3.</p>
+      <div class="sim"><div class="sim-canvas">
+        <svg viewBox="0 0 460 150" role="img" aria-label="BPMN-Diagramm: Start, Multi-Instance-Aktivität 'Position verarbeiten' mit sequentiellem Marker, für jede Position in positionen, Ende">
+          <defs>
+            <marker id="arr-mi" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="var(--ink-3)"/></marker>
+          </defs>
+          <path class="flow" marker-end="url(#arr-mi)" d="M47 93 H120"/>
+          <path class="flow" marker-end="url(#arr-mi)" d="M300 93 H361"/>
+
+          <text class="cond" x="120" y="45">für jede Position in positionen</text>
+
+          <circle class="bp" cx="32" cy="93" r="15"/>
+          <rect class="bp" x="120" y="57" width="180" height="72" rx="9"/>
+          <text class="meta" x="130" y="72">SERVICE</text>
+          <text x="210" y="98" text-anchor="middle">Position verarbeiten</text>
+          <g stroke="var(--ink)" stroke-width="1.8" stroke-linecap="round">
+            <line x1="200" y1="112" x2="220" y2="112"/>
+            <line x1="200" y1="117" x2="220" y2="117"/>
+            <line x1="200" y1="122" x2="220" y2="122"/>
+          </g>
+          <circle class="bp bp-thick" cx="376" cy="93" r="15"/>
+        </svg>
+      </div></div>`,
     task: `
       <p>Schreibe <code>gesamtsumme(positionen)</code>. Die Funktion bekommt ein Array wie</p>
       ${pre(`[{ preis: 10, menge: 2 }, { preis: 5.5, menge: 4 }]`)}
