@@ -285,6 +285,7 @@ const t2 = tickets.find((t) => t.id === "T-2");
 const nochWasOffen = tickets.some((t) => t.offen); // true
 
 // reduce: alles zu einem Wert zusammenfassen
+// n ist der Zwischenstand (startet bei 0, dem letzten Argument), t das aktuelle Element
 const anzahlOffen = tickets.reduce((n, t) => (t.offen ? n + 1 : n), 0);
 `)}
       <p><code>(t) =&gt; t.prio === "hoch"</code> ist eine <strong>Pfeilfunktion</strong>: eine kurze Funktion ohne Namen. Die Methoden ändern das ursprüngliche Array nicht, sondern liefern ein neues. Das macht Worker-Code gut nachvollziehbar.</p>`,
@@ -527,6 +528,8 @@ const response = await fetch("https://api.example.com/bestellungen", {
   // Prüfe response.ok und gib die Daten zurück
 }
 
+// Hier, außerhalb einer async-Funktion, gibt es kein await auf oberster Ebene.
+// Deshalb .then() statt await – beides wartet auf dasselbe Promise.
 ladeKunde(42).then((kunde) => console.log(kunde));
 `,
     hint: `<code>if (!response.ok) { throw new Error(\`Kunde \${id} nicht gefunden\`); }</code> und danach <code>return await response.json();</code>`,
@@ -539,6 +542,8 @@ ladeKunde(42).then((kunde) => console.log(kunde));
   return await response.json();
 }
 
+// Hier, außerhalb einer async-Funktion, gibt es kein await auf oberster Ebene.
+// Deshalb .then() statt await – beides wartet auf dasselbe Promise.
 ladeKunde(42).then((kunde) => console.log(kunde));
 `,
     tests: [
@@ -793,11 +798,11 @@ outputElement:     = pruefErgebnis    was jede Instanz beisteuert
         </tbody>
       </table></div>
       ${pre(`
-= betrag > 1000 and kunde.vip = false
-= if score >= 600 then "genehmigt" else "abgelehnt"
-= sum(positionen.preis)
-= count(positionen[menge > 5])
-= { name: kunde.vorname + " " + kunde.nachname, stadt: kunde.adresse.stadt }
+= betrag > 1000 and kunde.vip = false                    // und-Verknüpfung zweier Vergleiche
+= if score >= 600 then "genehmigt" else "abgelehnt"       // ersetzt den Ternary-Operator ?: aus JS
+= sum(positionen.preis)                                    // summiert eine Liste, wie reduce() in JS
+= count(positionen[menge > 5])                              // [...] filtert, count() zählt die Treffer
+= { name: kunde.vorname + " " + kunde.nachname, stadt: kunde.adresse.stadt }  // baut ein neues Objekt
 `)}`,
     questions: [
       { q: `Wie schreibst du <code>betrag &gt;= 1000 &amp;&amp; !kunde.vip</code> in FEEL?`, options: ["<code>betrag &gt;= 1000 &amp;&amp; !kunde.vip</code>", "<code>betrag &gt;= 1000 and not(kunde.vip)</code>", "<code>betrag =&gt; 1000 und nicht kunde.vip</code>"], correct: 1,
@@ -1178,19 +1183,20 @@ const daten = await response.json();  // erst jetzt ist sicher, dass es klappt
         </tbody>
       </table></div>
       ${pre(`
+// record erzeugt Konstruktor und Zugriffsmethoden (preis(), menge(), ...) automatisch
 public record Position(String artikel, double preis, int menge) {
   public double summe() {
     return preis * menge;
   }
 }
 
-List<Position> positionen = List.of(
+List<Position> positionen = List.of(                 // unveränderliche Liste, wie [a, b] in JS
     new Position("Kabel", 4.5, 10),
     new Position("Router", 89.0, 1));
 
-double gesamt = positionen.stream()
-    .mapToDouble(Position::summe)   // Methodenreferenz, wie p -> p.summe()
-    .sum();
+double gesamt = positionen.stream()   // .stream() macht aus der Liste einen Datenstrom für filter/map/reduce
+    .mapToDouble(Position::summe)     // Methodenreferenz, wie p -> p.summe()
+    .sum();                           // Endergebnis: eine Zahl statt eines Streams
 `)}
       <p>Ein <strong>record</strong> ist eine unveränderliche Datenklasse. Java erzeugt Konstruktor, <code>equals</code>, <code>toString</code> und Zugriffsmethoden automatisch. Die heißen wie das Feld: <code>p.preis()</code>, nicht <code>getPreis()</code>.</p>`,
     questions: [
