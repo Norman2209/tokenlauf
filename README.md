@@ -4,6 +4,8 @@ Ein interaktiver Lernpfad für alle, die Prozessautomatisierung mit Camunda lern
 
 Die App läuft komplett im Browser. Sie braucht keinen Server, keine Anmeldung und keinen Build-Schritt.
 
+Als roter Faden begleitet dich die fiktive **NordPaket GmbH**: Du automatisierst dort Schritt für Schritt denselben Bestellprozess, von den ersten Variablen in Modul 1 bis zur produktionsreifen Architektur in Modul 8. Jedes Modul startet mit ein bis zwei Sätzen, die einordnen, wo NordPaket gerade steht.
+
 ## Inhalt
 
 45 Schritte in 8 Modulen:

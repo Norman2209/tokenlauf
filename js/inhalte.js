@@ -32,6 +32,7 @@ const MODULES = [
   {
     id: "variablen", type: "code", title: "Variablen & Datentypen", file: "variablen.js",
     theory: `
+      <p class="story"><b>NordPaket GmbH —</b> Du fängst heute im Team Prozessautomatisierung an. Dein erster Auftrag: den Bestellprozess von NordPaket Schritt für Schritt automatisieren. Los geht's, wie bei jedem Prozess, bei den Daten, die darin mitlaufen.</p>
       <p>In jedem automatisierten Prozess wandern Daten mit: eine Auftragsnummer, ein Betrag, die Info, ob Expressversand gewünscht ist. In Camunda heißen sie <strong>Prozessvariablen</strong>. In deinem Code speicherst du solche Werte in Variablen.</p>
       ${pre(`
 // const: der Wert bleibt gleich
@@ -356,6 +357,7 @@ console.log(offeneAuftragsIds(auftraege)); // ["A-1", "A-3"]
   {
     id: "json", type: "code", title: "JSON lesen und schreiben", file: "json.js",
     theory: `
+      <p class="story"><b>NordPaket GmbH —</b> Der Webshop schickt dir Bestelldaten als JSON. Bevor du sie in den Prozess einspeist, musst du sie lesen und richtig umformen können.</p>
       <p>Wenn Systeme Daten austauschen, dann fast immer als <strong>JSON</strong>. Auch Camunda speichert Prozessvariablen als JSON. JSON sieht aus wie ein JavaScript-Objekt, ist aber Text mit strengeren Regeln: Schlüssel in doppelten Anführungszeichen, keine Funktionen, kein <code>undefined</code>, kein Komma am Ende.</p>
       ${pre(`
 const text = '{"kunde": {"name": "Erika", "vip": true}}';
@@ -629,6 +631,7 @@ POST   /bestellungen/B-2001/stornierung     fachliche Aktion als Unterressource
   {
     id: "bpmn", type: "quiz", title: "BPMN-Grundelemente", widget: "legend",
     theory: `
+      <p class="story"><b>NordPaket GmbH —</b> Zeit, den Bestellprozess erstmals als Diagramm zu zeichnen, statt nur in Code zu denken.</p>
       <p><strong>BPMN</strong> (Business Process Model and Notation) ist die grafische Sprache, in der du Prozesse für Camunda modellierst. Das Diagramm ist gleichzeitig Dokumentation und ausführbares Programm: Die Engine liest die BPMN-Datei (XML) und führt sie aus.</p>
       <p>Durch den Prozess wandert ein <strong>Token</strong>. Er markiert, wo eine Prozessinstanz gerade steht. Kommt er an einem Service Task an, legt die Engine einen <strong>Job</strong> an, den dein Code abarbeitet. Genau so wandert der gelbe Token durch deinen Lernpfad.</p>`,
     questions: [
@@ -907,6 +910,7 @@ not("gesperrt")         alles außer
   {
     id: "worker-konzept", type: "quiz", title: "So arbeitet ein Job Worker",
     theory: `
+      <p class="story"><b>NordPaket GmbH —</b> Das Diagramm steht, aber noch bewegt sich nichts. Jetzt schreibst du den Code, der NordPakets Prozess wirklich antreibt.</p>
       <p>Ein <strong>Job Worker</strong> ist ein kleines Programm, das die Arbeit hinter den Service Tasks erledigt. Die Engine selbst führt keinen Code aus. Sie verteilt Jobs, und dein Worker holt sie ab.</p>
       <ol class="seq">
         <li>Der Token erreicht einen Service Task mit dem Task-Typ <code>rechnung-berechnen</code>. Die Engine legt einen Job an.</li>
@@ -1157,6 +1161,7 @@ const daten = await response.json();  // erst jetzt ist sicher, dass es klappt
   {
     id: "java-basics", type: "quiz", title: "Java für JavaScript-Kenner",
     theory: `
+      <p class="story"><b>NordPaket GmbH —</b> Das Backend-Team betreibt die Prozesse nicht nur, es baut auch die Worker dafür – in Java mit Spring Boot. Zeit, dieselbe Logik dort wiederzuerkennen.</p>
       <p>Die meisten Camunda-Projekte in Unternehmen laufen auf Java mit Spring Boot. Die gute Nachricht: Alles, was du bisher gelernt hast, gilt weiter. Java ist nur strenger. Jede Variable hat einen festen <strong>Typ</strong>, und der Compiler prüft ihn, bevor das Programm überhaupt startet.</p>
       <div class="table-wrap"><table class="t">
         <thead><tr><th>Konzept</th><th>JavaScript</th><th>Java</th></tr></thead>
@@ -1393,6 +1398,7 @@ public class BonitaetWorker {
   {
     id: "orchestrierung", type: "quiz", title: "Orchestrierung oder Choreografie",
     theory: `
+      <p class="story"><b>NordPaket GmbH —</b> Der Prozess wächst: Zahlungseingang, Lagerbestand und Versanddienstleister müssen jetzt zusammenspielen, nicht mehr nur ein Worker allein.</p>
       <p>Wenn mehrere Services einen Geschäftsprozess gemeinsam erledigen, gibt es zwei Grundmuster:</p>
       <div class="table-wrap"><table class="t">
         <thead><tr><th></th><th>Orchestrierung</th><th>Choreografie</th></tr></thead>
@@ -1697,6 +1703,7 @@ Reise buchen
   {
     id: "microservices", type: "quiz", title: "Microservices & verteilte Systeme",
     theory: `
+      <p class="story"><b>NordPaket GmbH —</b> Mit jedem neuen Team stellt sich dieselbe Frage: ein großer Prozess mit allem drin, oder viele kleine, unabhängige Services?</p>
       <p>Ein <strong>Microservice</strong> ist ein unabhängig deploybarer Service, der eine fachliche Fähigkeit abdeckt, seine eigenen Daten besitzt und von einem Team verantwortet wird. Das bringt Autonomie, aber auch alle Probleme verteilter Systeme.</p>
       <h3>Irrtümer über verteilte Systeme</h3>
       <p>Peter Deutsch und Kollegen haben Annahmen gesammelt, die in verteilten Systemen falsch sind. Die wichtigsten:</p>
@@ -2118,6 +2125,7 @@ Konsequenzen: + Transparenz pro Bestellung in Operate
   {
     id: "anforderungsarten", type: "sort", title: "Anforderungen einordnen",
     theory: `
+      <p class="story"><b>NordPaket GmbH —</b> Bevor du weiterbaust, setzt du dich mit dem Fachbereich zusammen und übersetzt, was sie wirklich brauchen, in das, was du als Nächstes modellierst.</p>
       <p><strong>Requirements Engineering</strong> heißt: Anforderungen ermitteln, dokumentieren, prüfen und über die Zeit verwalten. Der Lehrplan des IREB (CPRE) unterscheidet drei Arten:</p>
       <div class="table-wrap"><table class="t">
         <thead><tr><th>Art</th><th>Frage</th><th>Beispiel</th></tr></thead>
@@ -2242,6 +2250,7 @@ Szenario: Keine Freigabe nötig
   {
     id: "naechste-schritte", type: "info", title: "Raus in die echte Welt",
     theory: `
+      <p class="story"><b>NordPaket GmbH —</b> Der Bestellprozess, den du hier Schritt für Schritt gebaut hast, ist bereit für eine echte Engine. Zeit, ihn dort laufen zu lassen.</p>
       <p>Du kennst jetzt die Bausteine von BPMN, DMN und FEEL, schreibst Worker in JavaScript und liest sie in Java, verstehst Messaging und Event-Driven Architecture und kannst Architekturentscheidungen begründen. Der nächste Schritt ist ein echtes System gegen eine echte Engine.</p>
       <ol class="seq">
         <li><strong>Node.js installieren.</strong> Die aktuelle LTS-Version von <a href="https://nodejs.org" target="_blank" rel="noopener">nodejs.org</a>.</li>

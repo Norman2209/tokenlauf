@@ -187,6 +187,8 @@ main { padding-block: 28px 64px; min-width: 0; }
 .theory ul, .theory ol { padding-left: 1.3em; }
 .theory li + li { margin-top: 4px; }
 .note { border-left: 3px solid var(--token); background: var(--token-soft); padding: 10px 14px; border-radius: 0 8px 8px 0; font-size: 15px; }
+.story { border-left: 3px solid var(--accent); background: var(--accent-soft); padding: 10px 14px; border-radius: 0 8px 8px 0; font-size: 15px; }
+.story b { color: var(--accent); font-family: var(--f-display); letter-spacing: .02em; }
 
 pre.code {
   margin: 0; background: var(--code-bg); color: var(--code-ink); border: 1px solid var(--line);
