@@ -141,6 +141,7 @@ console.log(pruefeFreigabe(750)); // "teamleitung"
           <text x="536" y="226" text-anchor="middle">return "automatisch"</text>
         </svg>
       </div></div>
+      <p class="note">Das ist eine Analogie für das <strong>Muster</strong>, nicht für den <strong>Ort</strong>: Dein <code>if</code> hier ist reine JavaScript-Übung. Im echten Prozess steht die Gateway-Bedingung als <strong>FEEL-Ausdruck im Modell</strong> (z. B. <code>= betrag &gt; 1000</code>) und wird von der Engine ausgewertet, nicht von deinem Code. Dein Job Worker liefert nur die Variable, auf die sich die Bedingung bezieht, z. B. mit <code>job.complete({ betrag: 750 })</code>. FEEL lernst du in Modul 3, Job Worker in Modul 4 – dort fügt sich das zusammen.</p>
       <div class="table-wrap"><table class="t">
         <thead><tr><th>Operator</th><th>Bedeutung</th><th>Beispiel</th></tr></thead>
         <tbody>
