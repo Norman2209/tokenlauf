@@ -390,6 +390,11 @@ table.dmn td.rn { color: var(--ink-3); text-align: center; font-family: var(--f-
 .profile-link:hover { border-color: var(--accent); }
 .profile-link[aria-current="true"] { border-color: var(--token); box-shadow: 0 0 0 3px var(--token-soft); }
 
+/* ---------- JS-Spickzettel ---------- */
+#main > h2 { font-family: var(--f-display); font-weight: 700; font-size: 19px; margin: 32px 0 14px; }
+#main > h2:first-of-type { margin-top: 28px; }
+.req pre.code { font-size: 12.5px; white-space: pre-wrap; }
+
 /* ---------- Mobil ---------- */
 @media (max-width: 900px) {
   .shell { grid-template-columns: minmax(0, 1fr); }

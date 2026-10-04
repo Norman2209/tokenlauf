@@ -9,9 +9,9 @@ try {
   if (saved && typeof saved === "object") state = { ...state, ...saved };
 } catch (e) { /* ohne Speicher weiter */ }
 function save() { try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch (e) { /* ignorieren */ } }
-if (!byId(state.current) && state.current !== "profil") state.current = LESSONS[0].id;
+if (!byId(state.current) && state.current !== "profil" && state.current !== "spickzettel") state.current = LESSONS[0].id;
 const hashId = location.hash.slice(1);
-if (byId(hashId) || hashId === "profil") state.current = hashId;
+if (byId(hashId) || hashId === "profil" || hashId === "spickzettel") state.current = hashId;
 
 /* =========================================================
    Simulierte Laufzeit im Web Worker
@@ -231,6 +231,7 @@ function renderSidebar() {
   const allDone = doneCount() === LESSONS.length;
   const covered = PROFILE.filter((r) => r.lessons.every((id) => state.done[id])).length;
   let html = `<button class="profile-link" data-id="profil" aria-current="${state.current === "profil"}">Dein Anforderungsprofil<small>${covered} von ${PROFILE.length} Bereichen abgedeckt</small></button>
+    <button class="profile-link" data-id="spickzettel" aria-current="${state.current === "spickzettel"}">JS-Spickzettel<small>Syntax zum Nachschlagen</small></button>
     <div class="path">
     <div class="ev-row start"><span class="ev"></span><span>Start</span></div>`;
   MODULES.forEach((m, mi) => {
@@ -312,7 +313,7 @@ function render() {
   renderSidebar();
   renderProgress();
   const l = byId(state.current);
-  if (!l) renderProfile();
+  if (!l) state.current === "spickzettel" ? renderSpickzettel() : renderProfile();
   else if (l.type === "code") renderCode(l);
   else if (l.type === "fill") renderFill(l);
   else if (l.type === "sort") renderSort(l);
@@ -657,6 +658,23 @@ function renderProfile() {
       ${firstOpen ? `<div><button class="btn-primary" data-go="${firstOpen.id}">Weiter lernen: ${esc(firstOpen.title)}</button></div>` : ""}
     </header>
     <div class="profile">${cards}</div>`;
+}
+
+/* ---------- JS-Spickzettel ---------- */
+function renderSpickzettel() {
+  const sections = SPICKZETTEL.map((s) => `
+    <h2>${esc(s.title)}</h2>
+    <div class="profile">${s.items.map((it) => `<article class="req">
+      <h3><code>${esc(it.term)}</code></h3>
+      <p>${esc(it.note)}</p>
+      ${pre(it.code)}
+    </article>`).join("")}</div>`).join("");
+  main.innerHTML = `<header class="lesson-head">
+      <div class="eyebrow"><span>Nachschlagen</span></div>
+      <h1>JS-Spickzettel</h1>
+      <p class="lead">Alle JavaScript-Konstrukte, die dir im Lernpfad begegnen, kurz mit Beispiel. Die ausführliche Erklärung steht jeweils in der Lektion, die das Thema einführt.</p>
+    </header>
+    ${sections}`;
 }
 
 /* ---------- BPMN-Legende ---------- */

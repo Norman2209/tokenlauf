@@ -2317,3 +2317,73 @@ const PROFILE = [
   { text: "Fundament: Programmieren und Job Worker (Voraussetzung für alles andere)",
     lessons: ["variablen", "bedingungen", "schleifen", "array-methoden", "json", "mapping", "worker-konzept", "erster-worker", "fehler"] },
 ];
+
+/* JS-Spickzettel: Nachschlagen statt neu erklären, Beispiele wie in den Lektionen */
+const SPICKZETTEL = [
+  { title: "Werte & Variablen", items: [
+    { term: "const / let", note: "const: der Wert bleibt gleich. let: der Wert darf sich später ändern.",
+      code: `const name = "Erika";   // bleibt gleich
+let versuche = 0;       // darf sich ändern
+versuche = versuche + 1;` },
+    { term: "=== / !== / && / || / !", note: "=== vergleicht Wert und Typ (sicherer als ==). && / || / ! verknüpfen und negieren Bedingungen.",
+      code: `"5" === 5           // false, Text ist keine Zahl
+betrag > 100 && istVip
+!istGesperrt` },
+    { term: "Ternärer Operator ?:", note: "Kurzform für if/else, die direkt einen Wert liefert, z. B. für eine Variable.",
+      code: `const status = alter >= 18 ? "volljährig" : "minderjährig";` },
+  ] },
+  { title: "Funktionen", items: [
+    { term: "function / Pfeilfunktion", note: "Zwei Schreibweisen für dasselbe. Pfeilfunktionen sind kurz und bei einer Zeile ohne return/{} möglich.",
+      code: `function verdoppeln(x) { return x * 2; }
+const verdoppeln2 = (x) => x * 2;` },
+  ] },
+  { title: "Daten umformen", items: [
+    { term: "Destructuring", note: "Werte gezielt aus einem Objekt oder Array herausziehen, statt sie einzeln zuzugreifen.",
+      code: `const { name, adresse } = kunde;
+const [erster, zweiter] = liste;` },
+    { term: "Template-Literal `...`", note: "Text mit eingesetzten Werten, über Backticks und ${...} statt +-Verkettung.",
+      code: `const text = \`Hallo \${name}, du hast \${anzahl} Artikel\`;` },
+    { term: "Optional Chaining ?. / Nullish Coalescing ??", note: "?. bricht ab, wenn links nichts steht, statt abzustürzen. ?? liefert einen Ersatzwert, wenn links null/undefined steht.",
+      code: `kunde.adresse?.stadt                  // undefined statt Absturz
+kunde.adresse?.stadt ?? "unbekannt"   // Ersatzwert` },
+    { term: "JSON.parse / JSON.stringify", note: "Wandelt JSON-Text in ein Objekt um und zurück. Camunda speichert Prozessvariablen als JSON.",
+      code: `const daten = JSON.parse(text);        // Text → Objekt
+const text2 = JSON.stringify(daten);   // Objekt → Text` },
+  ] },
+  { title: "Listen durchgehen", items: [
+    { term: "for...of", note: "Geht jedes Element eines Arrays der Reihe nach durch.",
+      code: `for (const position of positionen) {
+  summe = summe + position.preis;
+}` },
+    { term: "filter / map / find / some / reduce", note: "Array-Methoden statt Schleifen von Hand. Sie ändern das Array nicht, sondern liefern ein neues Ergebnis.",
+      code: `liste.filter((x) => x.offen)              // nur passende Elemente
+liste.map((x) => x.id)                    // jedes Element umwandeln
+liste.find((x) => x.id === "A-1")         // erstes passendes Element
+liste.some((x) => x.offen)                // gibt es mindestens eins?
+liste.reduce((summe, x) => summe + x.preis, 0)  // alles zu einem Wert` },
+  ] },
+  { title: "Asynchron & Fehler", items: [
+    { term: "async / await", note: "await wartet auf ein Promise, z. B. eine fetch-Antwort. Funktioniert nur in async-Funktionen.",
+      code: `async function laden() {
+  const antwort = await fetch(url);
+  return await antwort.json();
+}` },
+    { term: "try / catch", note: "Fängt einen Fehler ab, statt dass das Programm abbricht.",
+      code: `try {
+  riskanteAktion();
+} catch (fehler) {
+  console.log(fehler.message);
+}` },
+  ] },
+  { title: "Klassen & Sammlungen", items: [
+    { term: "class", note: "Bündelt Daten (im constructor) und Methoden in einem Objekt-Bauplan. this verweist auf die eigene Instanz.",
+      code: `class Zaehler {
+  constructor() { this.wert = 0; }
+  erhoehe() { this.wert += 1; }
+}` },
+    { term: "Set", note: "Eine Menge ohne Duplikate, praktisch um zu merken, was schon verarbeitet wurde.",
+      code: `const gesehen = new Set();
+gesehen.add("A-1");
+gesehen.has("A-1");   // true` },
+  ] },
+];
