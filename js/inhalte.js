@@ -2222,8 +2222,8 @@ Szenario: Keine Freigabe nötig
     ],
   },
   {
-    id: "abschluss-check", type: "quiz", title: "Abschluss-Check: Stellenprofil",
-    theory: `<p>Sechs Fragen, wie sie in einem Fachgespräch für die Stelle kommen könnten. Jede verbindet mehrere Themen aus deinem Lernpfad.</p>`,
+    id: "abschluss-check", type: "quiz", title: "Abschluss-Check: Anforderungsprofil",
+    theory: `<p>Sechs Fragen, wie sie in einem Fachgespräch kommen könnten. Jede verbindet mehrere Themen aus deinem Lernpfad.</p>`,
     questions: [
       { q: `Ein Worker ruft ein Altsystem auf, das bei gesperrten Kunden HTTP 422 mit dem Code <code>KUNDE_GESPERRT</code> liefert. Wie gehst du vor?`, options: ["<code>job.fail</code> mit Retries", "Einen BPMN-Fehler <code>KUNDE_GESPERRT</code> werfen und im Modell ein Error Boundary Event mit Ausnahmepfad vorsehen", "Den Fehler loggen und <code>complete</code> aufrufen"], correct: 1,
         explain: `Fachlicher Fehler, fachliche Behandlung im Modell. Ein Retry würde am gesperrten Kunden nichts ändern.` },
@@ -2263,7 +2263,7 @@ npm install @camunda8/sdk
         <li>Baue den Bestellprozess aus dem Gateway-Simulator nach, mit User Task für die Manager-Freigabe.</li>
         <li>Hänge ein Error Boundary Event mit Code <code>BONITAET_ABGELEHNT</code> an den Bonitäts-Task und modelliere eine Absage-Mail.</li>
         <li>Lagere die Rabattregeln in eine echte DMN-Tabelle aus und rufe sie über einen Business Rule Task auf.</li>
-        <li><strong>Portfolio-Projekt für die Bewerbung:</strong> ein Bestellprozess mit Spring-Boot-Workern in Clean Architecture, Zahlungseingang über Kafka mit Nachrichtenkorrelation, einer DMN-Tabelle, einer Saga mit Kompensation und zwei, drei ADRs. Damit deckst du fast jede Zeile deines Stellenprofils ab.</li>
+        <li><strong>Portfolio-Projekt für die Bewerbung:</strong> ein Bestellprozess mit Spring-Boot-Workern in Clean Architecture, Zahlungseingang über Kafka mit Nachrichtenkorrelation, einer DMN-Tabelle, einer Saga mit Kompensation und zwei, drei ADRs. Damit deckst du fast jede Zeile deines Anforderungsprofils ab.</li>
       </ul>
       <h3>Weiterlernen</h3>
       <ul>
@@ -2282,7 +2282,7 @@ const byId = (id) => LESSONS.find((l) => l.id === id);
 const TYPE_LABEL = { code: "Code-Übung", fill: "Lückentext", quiz: "Quiz", sort: "Zuordnen", info: "Wissen" };
 const TYPE_SHAPE = { code: "task", fill: "task", quiz: "gw", sort: "gw", info: "ev2" };
 
-/* Stellenprofil: jede Anforderung mit den Schritten, die sie abdecken */
+/* Anforderungsprofil: jede Anforderung mit den Schritten, die sie abdecken */
 const PROFILE = [
   { text: "Sehr gute Kenntnisse in BPMN 2.0 sowie idealerweise DMN und FEEL",
     lessons: ["bpmn", "gateways", "ereignisse", "subprozesse", "feel", "dmn", "dmn-vertieft"] },

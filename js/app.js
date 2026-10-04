@@ -230,7 +230,7 @@ function renderProgress() {
 function renderSidebar() {
   const allDone = doneCount() === LESSONS.length;
   const covered = PROFILE.filter((r) => r.lessons.every((id) => state.done[id])).length;
-  let html = `<button class="profile-link" data-id="profil" aria-current="${state.current === "profil"}">Dein Stellenprofil<small>${covered} von ${PROFILE.length} Bereichen abgedeckt</small></button>
+  let html = `<button class="profile-link" data-id="profil" aria-current="${state.current === "profil"}">Dein Anforderungsprofil<small>${covered} von ${PROFILE.length} Bereichen abgedeckt</small></button>
     <div class="path">
     <div class="ev-row start"><span class="ev"></span><span>Start</span></div>`;
   MODULES.forEach((m, mi) => {
@@ -634,7 +634,7 @@ function renderSort(l) {
   if (state.done[l.id]) check();
 }
 
-/* ---------- Stellenprofil ---------- */
+/* ---------- Anforderungsprofil ---------- */
 function renderProfile() {
   const cards = PROFILE.map((r) => {
     const done = r.lessons.filter((id) => state.done[id]).length, total = r.lessons.length;
@@ -652,8 +652,8 @@ function renderProfile() {
   const firstOpen = LESSONS.find((l) => !state.done[l.id]);
   main.innerHTML = `<header class="lesson-head">
       <div class="eyebrow"><span>Übersicht</span><span>${doneCount()} von ${LESSONS.length} Schritten erledigt</span></div>
-      <h1>Dein Stellenprofil</h1>
-      <p class="lead">Jede Anforderung aus der Stellenausschreibung mit den Schritten, die sie abdecken. Manche Schritte zahlen auf mehrere Anforderungen ein.</p>
+      <h1>Dein Anforderungsprofil</h1>
+      <p class="lead">Jede Anforderung mit den Schritten, die sie abdecken. Manche Schritte zahlen auf mehrere Anforderungen ein.</p>
       ${firstOpen ? `<div><button class="btn-primary" data-go="${firstOpen.id}">Weiter lernen: ${esc(firstOpen.title)}</button></div>` : ""}
     </header>
     <div class="profile">${cards}</div>`;

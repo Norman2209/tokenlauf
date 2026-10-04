@@ -32,7 +32,7 @@ LESSONS.forEach((l) => {
   ids.add(l.id);
 });
 PROFILE.forEach((r) => r.lessons.forEach((id) => {
-  if (!ids.has(id)) problems.push(`Stellenprofil verweist auf unbekannte Lektion: ${id}`);
+  if (!ids.has(id)) problems.push(`Anforderungsprofil verweist auf unbekannte Lektion: ${id}`);
 }));
 LESSONS.filter((l) => l.type === "fill").forEach((l) => {
   const marks = [...l.code.matchAll(/\[\[(\w+)\]\]/g)].map((m) => m[1]).sort().join();

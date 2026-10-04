@@ -19,7 +19,7 @@ Die App läuft komplett im Browser. Sie braucht keinen Server, keine Anmeldung u
 | 7 Architektur | Microservices, Resilienz, DDD, Aggregates, Event Storming, Clean Architecture, Enterprise-Architektur |
 | 8 Anforderungen & Zusammenarbeit | Anforderungsarten, User Stories, Arbeit mit Fachbereichen, Abschluss-Check |
 
-Die Übersicht **„Dein Stellenprofil“** ordnet jede Anforderung einer Stellenausschreibung den passenden Schritten zu und zeigt den Fortschritt.
+Die Übersicht **„Dein Anforderungsprofil“** ordnet jede Anforderung den passenden Schritten zu und zeigt den Fortschritt.
 
 ### Übungstypen
 
@@ -52,7 +52,7 @@ Dann <http://localhost:8000> im Browser öffnen.
 tokenlauf/
 ├── index.html                  Seitengerüst
 ├── css/styles.css              Gestaltung (helles und dunkles Farbschema)
-├── js/inhalte.js               Alle Lektionen, Quizze, Tests und das Stellenprofil
+├── js/inhalte.js               Alle Lektionen, Quizze, Tests und das Anforderungsprofil
 ├── js/app.js                   Darstellung, Editor, Testlauf im Web Worker, simulierte Engine
 ├── tests/pruefe-loesungen.js   Prüft, dass jede Musterlösung ihre Tests besteht
 └── .github/workflows/tests.yml Führt diese Prüfung bei jedem Push aus
