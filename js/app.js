@@ -666,13 +666,15 @@ function renderSpickzettel() {
     <h2>${esc(s.title)}</h2>
     <div class="profile">${s.items.map((it) => `<article class="req">
       <h3><code>${esc(it.term)}</code></h3>
-      <p>${esc(it.note)}</p>
+      <p>${it.note}</p>
       ${pre(it.code)}
+      ${it.pitfall ? `<p class="note">${it.pitfall}</p>` : ""}
+      ${it.lesson ? `<button class="req-deep" data-go="${it.lesson}">Vertiefung: ${esc(byId(it.lesson).title)}</button>` : ""}
     </article>`).join("")}</div>`).join("");
   main.innerHTML = `<header class="lesson-head">
       <div class="eyebrow"><span>Nachschlagen</span></div>
       <h1>JS-Spickzettel</h1>
-      <p class="lead">Alle JavaScript-Konstrukte, die dir im Lernpfad begegnen, kurz mit Beispiel. Die ausführliche Erklärung steht jeweils in der Lektion, die das Thema einführt.</p>
+      <p class="lead">Alle JavaScript-Konstrukte, die dir im Lernpfad begegnen – mit Beispiel, der Stolperfalle, auf die Einsteiger meistens laufen, und einem Link zur Lektion, die das Thema zuerst einführt.</p>
     </header>
     ${sections}`;
 }

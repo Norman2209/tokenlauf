@@ -2318,72 +2318,152 @@ const PROFILE = [
     lessons: ["variablen", "bedingungen", "schleifen", "array-methoden", "json", "mapping", "worker-konzept", "erster-worker", "fehler"] },
 ];
 
-/* JS-Spickzettel: Nachschlagen statt neu erklären, Beispiele wie in den Lektionen */
+/* JS-Spickzettel: Nachschlagen statt neu erklären, Beispiele wie in den Lektionen.
+   Jeder Eintrag nennt zusätzlich die Stolperfalle, auf die Einsteiger typischerweise
+   laufen, und verlinkt die Lektion, die das Konstrukt zuerst einführt. */
 const SPICKZETTEL = [
   { title: "Werte & Variablen", items: [
-    { term: "const / let", note: "const: der Wert bleibt gleich. let: der Wert darf sich später ändern.",
-      code: `const name = "Erika";   // bleibt gleich
-let versuche = 0;       // darf sich ändern
-versuche = versuche + 1;` },
-    { term: "=== / !== / && / || / !", note: "=== vergleicht Wert und Typ (sicherer als ==). && / || / ! verknüpfen und negieren Bedingungen.",
-      code: `"5" === 5           // false, Text ist keine Zahl
-betrag > 100 && istVip
-!istGesperrt` },
-    { term: "Ternärer Operator ?:", note: "Kurzform für if/else, die direkt einen Wert liefert, z. B. für eine Variable.",
-      code: `const status = alter >= 18 ? "volljährig" : "minderjährig";` },
+    { term: "const / let", lesson: "variablen",
+      note: `<code>const</code> verhindert nur, dass die <strong>Variable neu zugewiesen</strong> wird. Bei Objekten und Arrays darf der <strong>Inhalt</strong> trotzdem verändert werden – <code>const</code> macht den Wert nicht unveränderlich, nur den Namen fest.`,
+      code: `const kunde = { name: "Erika" };
+kunde.name = "Max";     // erlaubt: der Inhalt ändert sich
+kunde = {};              // Fehler: die Variable selbst nicht
+
+let versuche = 0;        // darf sich ändern
+versuche = versuche + 1;`,
+      pitfall: `Häufiger Fehler: <code>const positionen = [];</code> und danach <code>positionen.push(...)</code> wirkt wie eine Änderung der Konstante, ist aber nur eine Änderung des Array-<em>Inhalts</em>. Das Array selbst bleibt dasselbe. Erst <code>positionen = [...]</code> (komplette Neuzuweisung) wäre ein Fehler.` },
+    { term: "=== / !== / && / || / !", lesson: "bedingungen",
+      note: `<code>===</code> vergleicht Wert <strong>und</strong> Typ, <code>==</code> rechnet die Typen vorher ineinander um und liefert dadurch überraschende Ergebnisse. <code>&&</code>/<code>||</code> werten nur so viel aus wie nötig (Kurzschlussauswertung) und geben nicht unbedingt <code>true</code>/<code>false</code> zurück, sondern einen der beiden Operanden.`,
+      code: `"5" === 5             // false, Text ist keine Zahl
+"5" == 5              // true, == wandelt den Typ um – deshalb === bevorzugen
+betrag > 1000 && !kunde.vip
+kunde.name || "Unbekannt"   // liefert "Unbekannt" nur, wenn kunde.name leer/undefined/null ist
+!istGesperrt`,
+      pitfall: `<code>betrag &gt; 1000 && !kunde.vip</code> ist dieselbe Bedingung, die du als FEEL-Ausdruck <code>betrag &gt; 1000 and not(kunde.vip)</code> im Prozessmodell schreibst (Modul 3). <code>||</code> als "Standardwert"-Trick schlägt fehl, wenn der echte Wert <code>0</code> oder <code>""</code> ist – dafür gibt es <code>??</code> (siehe unten).` },
+    { term: "Ternärer Operator ?:", lesson: "bedingungen",
+      note: `Kurzform für <code>if/else</code>, die direkt einen Wert liefert – nützlich für eine Zuweisung, aber keine Zeile für ganze Programmlogik.`,
+      code: `const status = alter >= 18 ? "volljährig" : "minderjährig";`,
+      pitfall: `Verschachtelte Ternarys (<code>a ? b : c ? d : e</code>) sind schwer zu lesen. Ab zwei Bedingungen ist ein normales <code>if/else</code> fast immer die bessere Wahl.` },
+    { term: "typeof", lesson: "variablen",
+      note: `Liefert den Datentyp als Text, z. B. zur Validierung von Werten, die aus <code>job.variables</code> oder einer API-Antwort kommen und nicht garantiert den erwarteten Typ haben.`,
+      code: `typeof "Erika"      // "string"
+typeof 42            // "number"
+typeof true          // "boolean"
+typeof undefined     // "undefined"
+typeof { a: 1 }      // "object"
+typeof [1, 2, 3]      // "object" – Arrays sind für typeof auch nur Objekte` },
   ] },
   { title: "Funktionen", items: [
-    { term: "function / Pfeilfunktion", note: "Zwei Schreibweisen für dasselbe. Pfeilfunktionen sind kurz und bei einer Zeile ohne return/{} möglich.",
+    { term: "function / Pfeilfunktion", lesson: "bedingungen",
+      note: `Zwei Schreibweisen für dasselbe. Pfeilfunktionen sind kurz, bei einer Ausdruck-Zeile ohne <code>return</code>/<code>{}</code> möglich – und binden <strong>kein eigenes <code>this</code></strong>, sie übernehmen es aus der Umgebung, in der sie stehen.`,
       code: `function verdoppeln(x) { return x * 2; }
-const verdoppeln2 = (x) => x * 2;` },
+const verdoppeln2 = (x) => x * 2;
+
+// mehrzeilig braucht es { } und ein explizites return:
+const verarbeite = (x) => {
+  const y = x * 2;
+  return y + 1;
+};`,
+      pitfall: `In einer Klassenmethode als Callback verwendet (z. B. an <code>array.map(...)</code> übergeben), behält eine Pfeilfunktion das <code>this</code> der Instanz. Eine normale <code>function</code> würde dort ein eigenes, meist <code>undefined</code>es <code>this</code> bekommen – ein klassischer Fehler bei Klassenmethoden (siehe unten).` },
   ] },
   { title: "Daten umformen", items: [
-    { term: "Destructuring", note: "Werte gezielt aus einem Objekt oder Array herausziehen, statt sie einzeln zuzugreifen.",
-      code: `const { name, adresse } = kunde;
-const [erster, zweiter] = liste;` },
-    { term: "Template-Literal `...`", note: "Text mit eingesetzten Werten, über Backticks und ${...} statt +-Verkettung.",
-      code: `const text = \`Hallo \${name}, du hast \${anzahl} Artikel\`;` },
-    { term: "Optional Chaining ?. / Nullish Coalescing ??", note: "?. bricht ab, wenn links nichts steht, statt abzustürzen. ?? liefert einen Ersatzwert, wenn links null/undefined steht.",
-      code: `kunde.adresse?.stadt                  // undefined statt Absturz
-kunde.adresse?.stadt ?? "unbekannt"   // Ersatzwert` },
-    { term: "JSON.parse / JSON.stringify", note: "Wandelt JSON-Text in ein Objekt um und zurück. Camunda speichert Prozessvariablen als JSON.",
-      code: `const daten = JSON.parse(text);        // Text → Objekt
-const text2 = JSON.stringify(daten);   // Objekt → Text` },
+    { term: "Destructuring", lesson: "mapping",
+      note: `Werte gezielt aus einem Objekt oder Array herausziehen, statt sie einzeln über den Namen anzusprechen. Funktioniert verschachtelt, mit Umbenennen und mit Standardwerten.`,
+      code: `const { id, firstName, lastName, rating } = antwort.data.customer;
+const [erster, zweiter] = liste;
+const { name: kundenname } = kunde;        // umbenennen
+const { rabatt = 0 } = optionen;           // Standardwert, falls rabatt fehlt`,
+      pitfall: `<code>const { name } = kunde;</code> wirft einen Fehler, wenn <code>kunde</code> selbst <code>undefined</code> ist – nicht nur, wenn <code>name</code> fehlt. Bei Daten, die aus einer API kommen, lohnt sich <code>?.</code> davor oder eine Prüfung, dass das Objekt überhaupt existiert.` },
+    { term: "Template-Literal `...`", lesson: "mapping",
+      note: `Text mit eingesetzten Werten, über Backticks (<code>\`</code>) und <code>\${...}</code> statt <code>+</code>-Verkettung. In <code>\${...}</code> darf ein beliebiger Ausdruck stehen, nicht nur eine Variable – und der String darf über mehrere Zeilen gehen.`,
+      code: `const text = \`Hallo \${name}, du hast \${anzahl} Artikel\`;
+const fehler = \`Kunde \${id} nicht gefunden\`;        // häufig in throw new Error(...)
+const summe = \`Gesamt: \${(preis * menge).toFixed(2)} €\`;  // Ausdruck statt nur Variable`,
+      pitfall: `Backticks lassen sich nicht ineinander verschachteln, ohne die äußeren zu schließen. Für den Normalfall (Text + Wert) reicht trotzdem fast immer ein einfacher <code>\${wert}</code>-Einschub.` },
+    { term: "Optional Chaining ?. / Nullish Coalescing ??", lesson: "json",
+      note: `<code>?.</code> bricht die Kette ab und liefert <code>undefined</code>, statt bei fehlendem Zwischenwert abzustürzen. <code>??</code> liefert nur dann einen Ersatzwert, wenn links wirklich <code>null</code> oder <code>undefined</code> steht – anders als <code>||</code>, das auch bei <code>0</code>, <code>""</code> oder <code>false</code> ersetzt.`,
+      code: `kunde.adresse?.stadt                    // undefined statt Absturz, wenn adresse fehlt
+kunde.adresse?.stadt ?? "unbekannt"     // Ersatzwert nur bei null/undefined
+kunde.rabatt ?? 0                        // liefert 0 nur, wenn rabatt fehlt – nicht wenn rabatt = 0 ist
+berechneSumme?.(positionen)              // optionaler Funktionsaufruf, falls berechneSumme existiert`,
+      pitfall: `<code>kunde.rabatt || 0</code> sieht nach demselben Ergebnis aus wie <code>?? 0</code> – bis <code>rabatt</code> wirklich <code>0</code> ist. Dann liefert <code>||</code> fälschlich wieder <code>0</code> durch Ersatz statt den echten (richtigen) Wert <code>0</code> unverändert durchzulassen. Bei Zahlen, die auch <code>0</code> sein dürfen, immer <code>??</code> statt <code>||</code>.` },
+    { term: "JSON.parse / JSON.stringify", lesson: "json",
+      note: `Wandelt JSON-Text in ein JavaScript-Objekt um und zurück. Prozess-Engines wie Camunda speichern Prozessvariablen als JSON – <code>undefined</code>, Funktionen und Datumsobjekte überleben die Umwandlung nicht unverändert.`,
+      code: `const daten = JSON.parse(text);           // Text → Objekt, wirft bei kaputtem JSON einen Fehler
+const text2 = JSON.stringify(daten);      // Objekt → Text
+const lesbar = JSON.stringify(daten, null, 2);  // mit Einrückung, gut zum Debuggen`,
+      pitfall: `<code>JSON.parse</code> wirft bei ungültigem Text eine <code>SyntaxError</code>-Ausnahme – wer Daten aus einer externen Quelle parst, sollte das in <code>try/catch</code> einpacken, statt den Worker abstürzen zu lassen.` },
   ] },
   { title: "Listen durchgehen", items: [
-    { term: "for...of", note: "Geht jedes Element eines Arrays der Reihe nach durch.",
+    { term: "for...of", lesson: "schleifen",
+      note: `Geht jedes Element eines Arrays der Reihe nach durch. Im Unterschied zu <code>for...in</code> (das über die <strong>Indizes</strong> läuft) liefert <code>for...of</code> direkt die <strong>Werte</strong> – und <code>break</code>/<code>continue</code> funktionieren darin, anders als in <code>forEach</code> oder den Array-Methoden unten.`,
       code: `for (const position of positionen) {
   summe = summe + position.preis;
-}` },
-    { term: "filter / map / find / some / reduce", note: "Array-Methoden statt Schleifen von Hand. Sie ändern das Array nicht, sondern liefern ein neues Ergebnis.",
-      code: `liste.filter((x) => x.offen)              // nur passende Elemente
-liste.map((x) => x.id)                    // jedes Element umwandeln
-liste.find((x) => x.id === "A-1")         // erstes passendes Element
-liste.some((x) => x.offen)                // gibt es mindestens eins?
-liste.reduce((summe, x) => summe + x.preis, 0)  // alles zu einem Wert` },
+}
+
+for (const position of positionen) {
+  if (position.preis > 1000) break;   // in forEach/map nicht möglich
+}`,
+      pitfall: `Soll die Schleife vorzeitig abbrechen können (<code>break</code>) oder einen Schritt überspringen (<code>continue</code>), brauchst du <code>for...of</code> – die Array-Methoden unten laufen immer bis zum Ende.` },
+    { term: "filter / map / find / some / every / reduce", lesson: "array-methoden",
+      note: `Array-Methoden statt Schleifen von Hand. Sie verändern das ursprüngliche Array nicht, sondern liefern ein neues Ergebnis – dadurch bleibt nachvollziehbar, welcher Schritt welche Daten erzeugt hat.`,
+      code: `liste.filter((x) => x.offen)              // nur passende Elemente, neues Array
+liste.map((x) => x.id)                    // jedes Element umwandeln, gleiche Länge
+liste.find((x) => x.id === "A-1")         // erstes passendes Element (oder undefined)
+liste.some((x) => x.offen)                // gibt es mindestens eins, das passt?
+liste.every((x) => x.offen)               // passen wirklich alle?
+liste.reduce((summe, x) => summe + x.preis, 0)
+// summe ist der Zwischenstand (startet beim letzten Argument, hier 0), x das aktuelle Element`,
+      pitfall: `Bei <code>reduce</code> ist der <strong>Startwert</strong> (das letzte Argument) entscheidend: Fehlt er bei einem leeren Array, wirft <code>reduce</code> einen Fehler. Er bestimmt außerdem den Typ des Ergebnisses – <code>reduce((n, x) => n + 1, 0)</code> zählt, <code>reduce((arr, x) => [...arr, x.id], [])</code> sammelt in einem neuen Array.` },
   ] },
   { title: "Asynchron & Fehler", items: [
-    { term: "async / await", note: "await wartet auf ein Promise, z. B. eine fetch-Antwort. Funktioniert nur in async-Funktionen.",
+    { term: "async / await", lesson: "async",
+      note: `<code>await</code> pausiert nur die <strong>eigene</strong> <code>async</code>-Funktion, bis das Promise (z. B. eine <code>fetch</code>-Antwort) fertig ist – das restliche Programm läuft währenddessen weiter. Außerhalb einer <code>async</code>-Funktion gibt es kein <code>await</code> auf oberster Ebene.`,
       code: `async function laden() {
   const antwort = await fetch(url);
+  if (!antwort.ok) throw new Error(\`Fehler \${antwort.status}\`);
   return await antwort.json();
-}` },
-    { term: "try / catch", note: "Fängt einen Fehler ab, statt dass das Programm abbricht.",
-      code: `try {
-  riskanteAktion();
+}
+
+// Hier, außerhalb einer async-Funktion, kein await auf oberster Ebene –
+// deshalb .then(), beide warten auf dasselbe Promise:
+laden().then((daten) => console.log(daten));`,
+      pitfall: `Jede <code>await fetch(...)</code> ohne <code>if (!antwort.ok)</code>-Prüfung davor ist eine Falle: <code>fetch</code> wirft bei HTTP-Fehlercodes (404, 500, ...) <strong>keinen</strong> Fehler, <code>antwort.ok</code> ist dann einfach <code>false</code>. Ohne eigene Prüfung landet ein Fehlerstatus unbemerkt im weiteren Code.` },
+    { term: "try / catch / throw new Error", lesson: "async",
+      note: `<code>try/catch</code> fängt einen Fehler ab, statt das Programm abstürzen zu lassen. <code>throw new Error("...")</code> erzeugt ihn selbst, z. B. um eine ungültige Eingabe sofort zu melden statt sie weiterzureichen. <code>catch</code> fängt auch Fehler aus jedem <code>await</code> innerhalb des <code>try</code>-Blocks.`,
+      code: `function pruefeMenge(menge) {
+  if (menge <= 0) throw new Error("Menge muss größer als 0 sein");
+}
+
+try {
+  pruefeMenge(-1);
 } catch (fehler) {
-  console.log(fehler.message);
-}` },
+  console.log(fehler.message);   // "Menge muss größer als 0 sein"
+}`,
+      pitfall: `Ein <code>throw new Error(...)</code> in reinem JavaScript ist etwas anderes als <code>job.error(...)</code> im Job Worker: <code>throw</code> ohne umgebendes <code>try/catch</code> bricht die Funktion ab, <code>job.error(...)</code> dagegen meldet der Prozess-Engine einen fachlichen BPMN-Fehler, den ein Error Boundary Event abfängt. Mehr dazu in Modul 4.` },
   ] },
   { title: "Klassen & Sammlungen", items: [
-    { term: "class", note: "Bündelt Daten (im constructor) und Methoden in einem Objekt-Bauplan. this verweist auf die eigene Instanz.",
+    { term: "class", lesson: "idempotenz",
+      note: `Bündelt Daten (angelegt im <code>constructor</code> über <code>this</code>) und Methoden in einem Objekt-Bauplan. <code>this</code> verweist innerhalb einer Methode auf die eigene Instanz – damit lassen sich Regeln (Invarianten) direkt an der Stelle prüfen, an der die Daten verändert werden, statt überall im Code verteilt.`,
       code: `class Zaehler {
   constructor() { this.wert = 0; }
   erhoehe() { this.wert += 1; }
-}` },
-    { term: "Set", note: "Eine Menge ohne Duplikate, praktisch um zu merken, was schon verarbeitet wurde.",
+}
+
+class Konto {
+  constructor(startguthaben) { this.guthaben = startguthaben; }
+  abheben(betrag) {
+    if (betrag > this.guthaben) throw new Error("Deckung nicht ausreichend");
+    this.guthaben -= betrag;
+  }
+}`,
+      pitfall: `Wird eine Methode wie <code>konto.abheben</code> von ihrer Instanz getrennt übergeben (z. B. <code>const fn = konto.abheben; fn(50);</code>), geht das <code>this</code> verloren und die Methode läuft ins Leere oder wirft einen Fehler. Als Callback deshalb <code>(betrag) => konto.abheben(betrag)</code> oder <code>konto.abheben.bind(konto)</code> verwenden.` },
+    { term: "Set", lesson: "idempotenz",
+      note: `Eine Menge ohne Duplikate, praktisch um sich zu merken, welche IDs schon verarbeitet wurden (idempotente Verarbeitung von Events). <code>has</code> prüft die Zugehörigkeit, <code>add</code> fügt hinzu – beides deutlich lesbarer als ein Array mit <code>includes</code>.`,
       code: `const gesehen = new Set();
-gesehen.add("A-1");
-gesehen.has("A-1");   // true` },
+gesehen.add("evt-1");
+gesehen.has("evt-1");   // true
+gesehen.has("evt-2");   // false`,
+      pitfall: `Ein <code>Set</code> erkennt Duplikate nur bei <strong>Primitivwerten</strong> (Texte, Zahlen) zuverlässig. Zwei Objekte mit identischem Inhalt, aber unterschiedlicher Referenz (<code>{ id: "A-1" }</code> zweimal neu erzeugt), gelten als verschieden. Für Event-Deduplizierung deshalb die ID (einen String) im <code>Set</code> speichern, nicht das ganze Event-Objekt.` },
   ] },
 ];
